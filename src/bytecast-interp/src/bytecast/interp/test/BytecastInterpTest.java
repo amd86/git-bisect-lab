@@ -99,10 +99,22 @@ public class BytecastInterpTest {
         if(name.startsWith(".")){
           continue;
         }
-        if(!(name.endsWith(".c"))){
+        if(!(name.endsWith("c"))){
           continue;
         }
-        if(name.startsWith("test")){
+        if(name.startsWith("test04")){
+          m_testCases.add(new TestCase(child.getAbsolutePath(), new String[]{"a.out", "a","b"}));
+        }
+        else if(name.startsWith("test05")){
+          m_testCases.add(new TestCase(child.getAbsolutePath(), new String[]{"a.out", "b","a"}));
+        }
+        else if(name.startsWith("test06")){
+          m_testCases.add(new TestCase(child.getAbsolutePath(), new String[]{"a.out", "a","b"}));
+        }
+        else if(name.startsWith("test07")){
+          m_testCases.add(new TestCase(child.getAbsolutePath(), new String[]{"a.out", "b","a"}));
+        }
+        else if(name.startsWith("test")){
           m_testCases.add(new TestCase(child.getAbsolutePath(), new String[]{"a.out"}));
         }
         if(name.startsWith("template")){
