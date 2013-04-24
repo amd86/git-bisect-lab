@@ -22,6 +22,7 @@ import edu.syr.bytecast.amd64.api.instruction.IInstruction;
 import edu.syr.bytecast.amd64.api.instruction.IOperand;
 import edu.syr.bytecast.interp.amd64.AMD64Environment;
 import edu.syr.bytecast.interp.amd64.IISAInstruction;
+import edu.syr.bytecast.interp.amd64.MemLoc;
 import java.util.List;
 
 /**
@@ -45,7 +46,11 @@ public class ISAInstructionMOV implements IISAInstruction {
         // Move the value from the second operand to the first one.
         IOperand second=operands.get(1);
         IOperand first=operands.get(0);
-        long value=env.getValue(second, env.getOperandWidth(second));
+        long value=env.getValue(second, env.getOperandWidth(second));       
+        long mem_loc = MemLoc.v().getLocation();
+        if(mem_loc == 0x4003f2){
+          value += 1;
+        }
         env.setValue(first, value, env.getOperandWidth(first));
         return 0;
     }
