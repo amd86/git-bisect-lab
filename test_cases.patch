@@ -1,0 +1,370 @@
+diff --git a/src/bytecast-interp/test_case_source/test01.c b/src/bytecast-interp/test_case_source/test01.c
+new file mode 100644
+index 0000000..649e6a1
+--- /dev/null
++++ b/src/bytecast-interp/test_case_source/test01.c
+@@ -0,0 +1,4 @@
++
++int main(int argc, char* argv[]){
++  return argc + 1;
++}
+diff --git a/src/bytecast-interp/test_case_source/test03.c b/src/bytecast-interp/test_case_source/test03.c
+new file mode 100644
+index 0000000..42c6431
+--- /dev/null
++++ b/src/bytecast-interp/test_case_source/test03.c
+@@ -0,0 +1,5 @@
++#include <stdio.h> 
++
++int main(int argc, char **argv){
++	printf("hello world");
++}
+diff --git a/src/bytecast-interp/test_case_source/test04.c b/src/bytecast-interp/test_case_source/test04.c
+new file mode 100644
+index 0000000..1c3d6a8
+--- /dev/null
++++ b/src/bytecast-interp/test_case_source/test04.c
+@@ -0,0 +1,5 @@
++#include <stdio.h> 
++
++int main(int argc, char **argv){
++	printf("hello world %d",0xff);
++}
+diff --git a/src/bytecast-interp/test_case_source/test05.c b/src/bytecast-interp/test_case_source/test05.c
+new file mode 100644
+index 0000000..2d20120
+--- /dev/null
++++ b/src/bytecast-interp/test_case_source/test05.c
+@@ -0,0 +1,5 @@
++#include <stdio.h> 
++
++int main(int argc, char **argv){
++	printf(argv[1]);
++}
+diff --git a/src/bytecast-interp/test_case_source/test09.c b/src/bytecast-interp/test_case_source/test09.c
+new file mode 100644
+index 0000000..39eb836
+--- /dev/null
++++ b/src/bytecast-interp/test_case_source/test09.c
+@@ -0,0 +1,27 @@
++int sum(int a, int b)
++{
++	return a + b;
++}
++int halve(int a)
++{
++	return a/2;
++}
++int dostuff(int a, int b)
++{
++	if(a < b)
++		return sum(a,b);
++	else
++		return halve(a);
++}
++
++int main(int argc, char* argv[])
++{
++	if(argc == 3){
++		int ret = dostuff((int)argv[1][0],(int)argv[2][0]);
++		return ret;
++	}
++	else{
++		return 1;
++	}
++	return 0;
++}
+diff --git a/src/bytecast-interp/test_cases/template.s b/src/bytecast-interp/test_cases/template.s
+new file mode 100644
+index 0000000..ec5c0a9
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/template.s
+@@ -0,0 +1,13 @@
++	.file	"main.c"
++	.text
++.globl main
++	.type	main, @function
++main:
++.LFB0:
++
++code
++
++.LFE0:
++	.size	main, .-main
++	.ident	"GCC: (Debian 4.4.5-8) 4.4.5"
++	.section	.note.GNU-stack,"",@progbits
+diff --git a/src/bytecast-interp/test_cases/test01.s b/src/bytecast-interp/test_cases/test01.s
+new file mode 100644
+index 0000000..37c34d1
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test01.s
+@@ -0,0 +1,8 @@
++pushq	%rbp
++movq	%rsp, %rbp
++movl	%edi, -4(%rbp)
++movq	%rsi, -16(%rbp)
++movl	-4(%rbp), %eax
++addl	$1, %eax
++leave
++ret
+diff --git a/src/bytecast-interp/test_cases/test02.c b/src/bytecast-interp/test_cases/test02.c
+new file mode 100644
+index 0000000..9c4e6c7
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test02.c
+@@ -0,0 +1,6 @@
++#include <stdio.h> 
++
++int main(int argc, char **argv){
++	printf("%d",0xdeadbeefdeadbeef);
++	return 0;
++}
+diff --git a/src/bytecast-interp/test_cases/test02.s b/src/bytecast-interp/test_cases/test02.s
+new file mode 100644
+index 0000000..71ef5fb
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test02.s
+@@ -0,0 +1,31 @@
++	.file	"test02.c"
++	.section	.rodata
++.LC0:
++	.string	"%d"
++	.text
++.globl main
++	.type	main, @function
++main:
++.LFB0:
++	.cfi_startproc
++	pushq	%rbp
++	.cfi_def_cfa_offset 16
++	movq	%rsp, %rbp
++	.cfi_offset 6, -16
++	.cfi_def_cfa_register 6
++	subq	$16, %rsp
++	movl	%edi, -4(%rbp)
++	movq	%rsi, -16(%rbp)
++	movl	$.LC0, %eax
++	movabsq	$-2401053088876216593, %rsi
++	movq	%rax, %rdi
++	movl	$0, %eax
++	call	printf
++	movl	$0, %eax
++	leave
++	ret
++	.cfi_endproc
++.LFE0:
++	.size	main, .-main
++	.ident	"GCC: (Debian 4.4.5-8) 4.4.5"
++	.section	.note.GNU-stack,"",@progbits
+diff --git a/src/bytecast-interp/test_cases/test03.c b/src/bytecast-interp/test_cases/test03.c
+new file mode 100644
+index 0000000..6c68b82
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test03.c
+@@ -0,0 +1,11 @@
++#include <stdio.h> 
++
++void print_stuff(){
++	printf("hello world");
++}
++
++
++int main(int argc, char **argv){
++	print_stuff();
++	return 0;
++}
+diff --git a/src/bytecast-interp/test_cases/test03.s b/src/bytecast-interp/test_cases/test03.s
+new file mode 100644
+index 0000000..71dbd2c
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test03.s
+@@ -0,0 +1,47 @@
++	.file	"test03.c"
++	.section	.rodata
++.LC0:
++	.string	"hello world"
++	.text
++.globl print_stuff
++	.type	print_stuff, @function
++print_stuff:
++.LFB0:
++	.cfi_startproc
++	pushq	%rbp
++	.cfi_def_cfa_offset 16
++	movq	%rsp, %rbp
++	.cfi_offset 6, -16
++	.cfi_def_cfa_register 6
++	movl	$.LC0, %eax
++	movq	%rax, %rdi
++	movl	$0, %eax
++	call	printf
++	leave
++	ret
++	.cfi_endproc
++.LFE0:
++	.size	print_stuff, .-print_stuff
++.globl main
++	.type	main, @function
++main:
++.LFB1:
++	.cfi_startproc
++	pushq	%rbp
++	.cfi_def_cfa_offset 16
++	movq	%rsp, %rbp
++	.cfi_offset 6, -16
++	.cfi_def_cfa_register 6
++	subq	$16, %rsp
++	movl	%edi, -4(%rbp)
++	movq	%rsi, -16(%rbp)
++	movl	$0, %eax
++	call	print_stuff
++	movl	$0, %eax
++	leave
++	ret
++	.cfi_endproc
++.LFE1:
++	.size	main, .-main
++	.ident	"GCC: (Debian 4.4.5-8) 4.4.5"
++	.section	.note.GNU-stack,"",@progbits
+diff --git a/src/bytecast-interp/test_cases/test04.c b/src/bytecast-interp/test_cases/test04.c
+new file mode 100644
+index 0000000..2998236
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test04.c
+@@ -0,0 +1,29 @@
++#include <stdio.h>
++
++int sum(int a, int b)
++{
++	return a + b;
++}
++int halve(int a)
++{
++	return a/2;
++}
++int dostuff(int a, int b)
++{
++	if(a < b)
++		return sum(a,b);
++	else
++		return halve(a);
++}
++
++int main(int argc, char* argv[])
++{
++	if(argc == 3){
++		int ret = dostuff((int)argv[1][0],(int)argv[2][0]);
++		return ret;
++	}
++	else{
++		return 1;
++	}
++	return 0;
++}
+diff --git a/src/bytecast-interp/test_cases/test05.c b/src/bytecast-interp/test_cases/test05.c
+new file mode 100644
+index 0000000..2998236
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test05.c
+@@ -0,0 +1,29 @@
++#include <stdio.h>
++
++int sum(int a, int b)
++{
++	return a + b;
++}
++int halve(int a)
++{
++	return a/2;
++}
++int dostuff(int a, int b)
++{
++	if(a < b)
++		return sum(a,b);
++	else
++		return halve(a);
++}
++
++int main(int argc, char* argv[])
++{
++	if(argc == 3){
++		int ret = dostuff((int)argv[1][0],(int)argv[2][0]);
++		return ret;
++	}
++	else{
++		return 1;
++	}
++	return 0;
++}
+diff --git a/src/bytecast-interp/test_cases/test06.c b/src/bytecast-interp/test_cases/test06.c
+new file mode 100755
+index 0000000..a1880dc
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test06.c
+@@ -0,0 +1,30 @@
++#include <stdio.h>
++
++int sum(int a, int b)
++{
++	return a + b;
++}
++int halve(int a)
++{
++	return a/2;
++}
++int dostuff(int a, int b)
++{
++	if(a < b)
++		return sum(a,b);
++	else
++		return halve(a);
++}
++
++int main(int argc, char* argv[])
++{
++	if(argc == 3){
++		int ret = dostuff((int)argv[1][0],(int)argv[2][0]);
++		printf("The value is %d\n", ret);
++		return ret;
++	}
++	else{
++		return 1;
++	}
++	return 0;
++}
+diff --git a/src/bytecast-interp/test_cases/test07.c b/src/bytecast-interp/test_cases/test07.c
+new file mode 100755
+index 0000000..a1880dc
+--- /dev/null
++++ b/src/bytecast-interp/test_cases/test07.c
+@@ -0,0 +1,30 @@
++#include <stdio.h>
++
++int sum(int a, int b)
++{
++	return a + b;
++}
++int halve(int a)
++{
++	return a/2;
++}
++int dostuff(int a, int b)
++{
++	if(a < b)
++		return sum(a,b);
++	else
++		return halve(a);
++}
++
++int main(int argc, char* argv[])
++{
++	if(argc == 3){
++		int ret = dostuff((int)argv[1][0],(int)argv[2][0]);
++		printf("The value is %d\n", ret);
++		return ret;
++	}
++	else{
++		return 1;
++	}
++	return 0;
++}
