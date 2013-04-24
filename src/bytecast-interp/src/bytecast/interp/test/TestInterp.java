@@ -27,19 +27,23 @@ import edu.syr.bytecast.fsys.elf.ElfExeObjParser;
 import edu.syr.bytecast.interfaces.fsys.ExeObj;
 import edu.syr.bytecast.interfaces.fsys.ExeObjIOUtils;
 import edu.syr.bytecast.interp.amd64.AMD64ExecutionEngine;
+import edu.syr.bytecast.interp.amd64.PrintStatements;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class TestInterp {
 
-  public int test(String folder, String args[]) {
+  public TestResult test(String folder, String args[]) {
         ElfExeObjParser elf_parser = new ElfExeObjParser(true);
         
         String exe_file = folder + File.separator + args[0];
         BytecastAmd64 amd64 = new BytecastAmd64(elf_parser,exe_file);
         IExecutableFile amd64_output = amd64.buildInstructionObjects();
+        
+        PrintStatements.reset();
         AMD64ExecutionEngine eng = new AMD64ExecutionEngine();
-        return (int)eng.runProgram(amd64_output, args);
+        int ret = (int) eng.runProgram(amd64_output, args);
+        return new TestResult(ret, PrintStatements.v().getExecLines());
   }
   
 }

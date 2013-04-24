@@ -22,6 +22,7 @@ import edu.syr.bytecast.util.ReadFileAsString;
 import edu.syr.bytecast.util.RunProcess;
 import edu.syr.bytecast.util.WriteStringAsFile;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestCPU {
@@ -34,7 +35,7 @@ public class TestCPU {
     m_fileWriter = new WriteStringAsFile();
   }
   
-  public int test(String run_folder,String[] args) {
+  public TestResult test(String run_folder,String[] args) {
     try {
       //run test case
       RunProcess runner2 = new RunProcess();
@@ -43,11 +44,10 @@ public class TestCPU {
           exec_string += " " + args[i];
       }
       int ret = runner2.exec(exec_string, new File(run_folder));
-      
-      return ret;
+      return new TestResult(ret, runner2.getOutput());
     } catch(Exception ex){
       ex.printStackTrace(System.out);
-      return -100;
+      return new TestResult(-100, new ArrayList<String>());
     }
   }
   

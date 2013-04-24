@@ -27,6 +27,7 @@ import edu.syr.bytecast.amd64.api.instruction.IOperand;
 import edu.syr.bytecast.amd64.impl.instruction.operand.OperandSectionName;
 import edu.syr.bytecast.interp.amd64.AMD64Environment;
 import edu.syr.bytecast.interp.amd64.IISAInstruction;
+import edu.syr.bytecast.interp.amd64.PrintStatements;
 import java.util.List;
 
 
@@ -68,7 +69,7 @@ public class ISAInstructionCALLQ implements IISAInstruction {
                    curr_char = (char)env.getValue(curr_str_addr, 1);
                }
                string_to_print = string_to_print.replace("%d", String.valueOf(arg1_val));
-               System.out.println(string_to_print);
+               PrintStatements.v().println(string_to_print);
            } else {
                return val1;
            } 

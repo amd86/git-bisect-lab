@@ -44,8 +44,8 @@ public class BytecastInterpTest {
       } else {
           compiled_path = new ASMTestCompiler().compile(filename, m_template,args[0]);
       }
-      int cpu_ret = runCpu(compiled_path,  args);
-      int interp_ret;
+      TestResult cpu_ret = runCpu(compiled_path,  args);
+      TestResult interp_ret;
       try {
         interp_ret = runInterp(compiled_path, args);
       } catch(Exception ex){
@@ -57,13 +57,13 @@ public class BytecastInterpTest {
         continue;
       }
       
-      if(cpu_ret == interp_ret){
+      if(cpu_ret.equals(interp_ret)){
         System.out.println("  PASSED");
       } else {
         failing.add(file.getName());
         System.out.println("  FAILED");
-        System.out.println("    cpu_ret:    "+cpu_ret);
-        System.out.println("    interp_ret: "+interp_ret);
+        System.out.println("    cpu_ret:    "+cpu_ret.toString());
+        System.out.println("    interp_ret: "+interp_ret.toString());
       }
       ++count;
     }
@@ -76,12 +76,12 @@ public class BytecastInterpTest {
     }
   }
   
-  private int runCpu(String filename, String[] args){
+  private TestResult runCpu(String filename, String[] args){
     TestCPU tester = new TestCPU();
     return tester.test(filename, args);
   }
 
-  private int runInterp(String filename, String[] args) {
+  private TestResult runInterp(String filename, String[] args) {
     TestInterp tester = new TestInterp();
     return tester.test(filename, args );
   }
