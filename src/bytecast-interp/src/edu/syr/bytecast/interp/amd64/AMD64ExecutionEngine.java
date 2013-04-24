@@ -153,15 +153,16 @@ public class AMD64ExecutionEngine implements IBytecastInterp {
                 InstructionType curr_inst_type = curr_inst.getInstructiontype();
                 
                 //Execute the instruction
-  //              System.out.println("----------------------------------");
- //               System.out.println("Running instruction " + curr_inst_type.name() + " at " + Long.toHexString(mem_loc));
+
+                //System.out.println("----------------------------------");
+                //System.out.println("Running instruction " + curr_inst_type.name() + " at " + Long.toHexString(mem_loc));
                 jump_addr = m_instructions.get(curr_inst_type).execute(m_env, curr_inst);
                 
                 //If the instruction caused a jump, then push where to return
                 //after the jump has completed and then push the instruction
                 //being jumped to.
                 if(jump_addr > 0) {
-  //                  System.err.println("Jumping to " + Long.toHexString(jump_addr));
+                    //System.err.println("Jumping to " + Long.toHexString(jump_addr));
                     if(curr_inst_type == InstructionType.CALL || curr_inst_type == InstructionType.CALLQ){
                         call_stack.push(new IndexPair(curr_section_idx, curr_instr_idx+1));
                     }

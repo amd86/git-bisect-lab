@@ -1,6 +1,7 @@
 
 package bytecast.interp.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestResult {
@@ -18,7 +19,19 @@ public class TestResult {
   }
   
   public List<String> getExecLines(){
-    return m_execLines;
+    return trimStrings(m_execLines);
+  }
+  
+  private List<String> trimStrings(List<String> input){
+    List<String> ret = new ArrayList<String>();
+    for(String str : input){
+      String curr_str = str.trim();
+      if(curr_str.equals("")){
+        continue;
+      }
+      ret.add(curr_str);
+    }
+    return ret;
   }
   
   @Override 
@@ -30,12 +43,12 @@ public class TestResult {
     if(m_ret != rhs.m_ret){
       return false;
     }
-    if(m_execLines.size() != rhs.m_execLines.size()){
+    if(getExecLines().size() != rhs.getExecLines().size()){
       return false;
     }
-    for(int i = 0; i < m_execLines.size(); ++i){
-      String lhs_line = m_execLines.get(i);
-      String rhs_line = rhs.m_execLines.get(i);
+    for(int i = 0; i < getExecLines().size(); ++i){
+      String lhs_line = getExecLines().get(i);
+      String rhs_line = rhs.getExecLines().get(i);
       if(lhs_line.equals(rhs_line) == false){
         return false;
       }
@@ -45,6 +58,6 @@ public class TestResult {
   
   @Override
   public String toString(){
-    return "[m_ret: "+m_ret+", m_execLines: {"+m_execLines.toString()+"}]";
+    return "[m_ret: "+m_ret+", m_execLines: {"+getExecLines().toString()+"}]";
   } 
 }

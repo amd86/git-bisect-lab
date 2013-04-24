@@ -25,7 +25,7 @@ public class PrintStatements {
   }
   
   public void println(String line){
-    m_execLines.add(line);
+    m_execLines.add(line.trim());
   }
   
   public List<String> getExecLines(){
