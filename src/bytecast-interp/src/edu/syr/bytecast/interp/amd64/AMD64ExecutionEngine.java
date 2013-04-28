@@ -146,7 +146,7 @@ public class AMD64ExecutionEngine implements IBytecastInterp {
             while(jump_addr == 0 && jump_addr != -1 && curr_instr_idx < instructions.size())
             {
                 long mem_loc = instructions.get(curr_instr_idx).getmInstructionAddress();
-                MemLoc.v().setLocation(mem_loc);
+                //MemLoc.v().setLocation(mem_loc);
                 //Fetch the current instruction and instruction type
                 IInstruction curr_inst = instructions.get(curr_instr_idx).getInstruction();
                 curr_inst = reverseOpcodes(curr_inst);
