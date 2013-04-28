@@ -53,11 +53,9 @@ public class ISAInstructionMOV implements IISAInstruction {
         if(first.getOperandType() == OperandType.MEMORY_EFFECITVE_ADDRESS){
             write_width = op_width2;
         }
+
         long value=env.getValue(second, write_width);  
-        long mem_loc = MemLoc.v().getLocation();
-        if(mem_loc == 0x4003f2){
-          value += 1;
-        } 
+ 
         env.setValue(first, value, write_width);
         return 0;
     }
