@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -jar pack.jar -mainjar dist/bytecast-interp.jar -directory lib/ -destjar git-bisect-lab-1.0.jar
